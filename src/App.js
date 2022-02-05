@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { io } from "socket.io-client";
+import { Container } from "./components";
+import { SokectConection } from "./hooks/useSocketiIO";
+import { Router } from "./router";
+
 
 function App() {
+  const selector = useSelector(state=>state.auth);
+  useEffect(() => {
+    if(selector.logged){
+      SokectConection.socketIO = io(process.env.REACT_APP_API_HOST,{
+        extraHeaders:{
+          'x-token': selector.data.token
+        }
+      });
+    }
+  }, [selector])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Router />
+    </Container>
   );
 }
 
