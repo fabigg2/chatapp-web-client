@@ -66,7 +66,10 @@ export const ButtonRd = styled.button`
     outline: none;
     cursor: pointer;
     &:hover{
-        opacity: .8;
+        opacity: .9;
+    }
+    &:disabled{
+        opacity: .7;
     }
 ` 
 
@@ -88,3 +91,29 @@ export const ButtonOption = styled.a`
         opacity: .8;
     }
 ` 
+
+
+export const Alert = styled.div`
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid ${props=>props.danger ? '#ff1a1a' : '#059b00' } ;
+    background: ${props=>props.danger ? '#ff1a1a96' : '#059b0096' };
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff
+`
+
+export const Error = styled.div`
+    width: 400px;
+    min-height: 200px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid ${props=>props.danger ? '#ff1a1a' : '#059b00' } ;
+    background: ${props=>props.danger ? '#ff1a1a96' : '#059b0096' };
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff
+`

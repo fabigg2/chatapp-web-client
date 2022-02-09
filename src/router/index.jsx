@@ -7,9 +7,12 @@ import { SignIn } from '../pages/SIgnIn';
 import { SignUp } from '../pages/SignUp';
 import { _login } from '../redux/actions';
 import { auth } from '../services/auth';
+import { routesPath } from '../settings/routesPath';
 import { getItemFromStorage, saveItemInStorage } from '../utils';
 import { PriveteRoutes } from './PriveteRoutes';
 import { PublicRoutes } from './PublicRoutes';
+
+
 
 
 export const Router = () => {
@@ -37,25 +40,27 @@ export const Router = () => {
   return (
     <Routes>
       <Route
-        path='/chat'
+        path={routesPath.chat}
         element={
           <PriveteRoutes>
             <ChatWindow />
           </PriveteRoutes>}
       />
       <Route
-        path='/login'
+        path={routesPath.login}
         element={
           <PublicRoutes>
             <SignIn />
           </PublicRoutes>}
       />
       <Route
-        path='/signup'
+        path={routesPath.signup}
         element={
           <PublicRoutes>
             <SignUp />
-          </PublicRoutes>} />
+          </PublicRoutes>}
+      />
+      <Route path='*' element={<SignIn />} />
     </Routes>
   );
 };

@@ -1,3 +1,5 @@
+import { chatReducer } from './reducers/chatReducer';
+
 const { createStore, combineReducers, compose, applyMiddleware } = require('redux');
 const { authReducer } = require('./reducers/authReducer');
 const { tempReducer } = require('./reducers/tempReducer');
@@ -8,7 +10,8 @@ const reducers = combineReducers({
     auth: authReducer,
     tmp: tempReducer,
     message: messageReducer,
-    friends: friendReducer
+    friends: friendReducer,
+    chat: chatReducer
 });
 
 

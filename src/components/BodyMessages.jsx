@@ -1,17 +1,60 @@
 import styled from 'styled-components';
+import { Message } from './Message';
+import { useSelector } from 'react-redux'
+import { useEffect, useRef } from 'react';
+import { SokectConection, useSoketIO } from '../hooks/useSocketiIO';
+import { useDispatch } from 'react-redux';
+import { _chatAddMessage } from '../redux/actions';
+import { _chatEditMessage, _chatMessages } from '../redux/actions/chatAction';
 
 export const BodyMessage = () => {
-  return (
-    <BodyMessges>
+  const chat = useSelector(state => state.chat);
+  const { user } = useSelector(state => state.auth.data);
+  const dispatch = useDispatch();
+  const ref = useRef();
+  const { listenEvent, emitEvent } = useSoketIO();
 
+  useEffect(() => {
+    listenEvent('new-message', (data) => {
+      dispatch(_chatAddMessage(data));
+      emitEvent('message-receive', data);
+    });
+    listenEvent('message-receive', (data) => {
+      dispatch(_chatEditMessage(data));
+    });
+    listenEvent('find-all-messages', (data) => {
+      dispatch(_chatMessages(data));
+    });
+  }, [])
+  useEffect(() => {
+    ref.current.scrollTop = ref.current.scrollHeight;
+  }, [chat]);
+
+  return (
+    <BodyMessges ref={ref}>
+      {
+        chat.map(message => (
+          <Message
+            message={message.msg}
+            me={message.from === user._id}
+            state={message.from === user._id ? message.state : null}
+          />
+        ))
+      }
     </BodyMessges>
   )
 };
 
 
 
-const BodyMessges =  styled.div`
+const BodyMessges = styled.div`
     width: 100%;
     height: calc(100% - 140px);
     overflow-y: scroll;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 `
+

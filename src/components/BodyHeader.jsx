@@ -1,13 +1,20 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 export const BodyHeader = () => {
+    const { data: tmp } = useSelector(state => state.tmp);
     return (
         <BodyHead>
             <OptionButon>
                 <i class="fas fa-ellipsis-v"></i>
             </OptionButon>
             <BodyHeaderImg >
-                <img src="https://i.pravatar.cc/50" alt="perfil" />
+                {
+                    tmp && <>
+                        <h3>{tmp.name} {tmp.lastname}</h3>
+                        <img src="https://i.pravatar.cc/50" alt="perfil" />
+                    </>
+                }
             </BodyHeaderImg>
         </BodyHead >
     )
@@ -20,12 +27,23 @@ const BodyHead = styled.div`
     padding: 0 3%;
     display: flex;
     align-items: center;
+    justify-content: center;
+    align-items: center;
     justify-content: space-between;
 `
 const BodyHeaderImg = styled.div`
-    width: 50;
     height: 50;
-    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    color: #fff;
+    text-transform: capitalize;
+    img{
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+    }
     overflow: hidden;
 `
 const OptionButon = styled.div`

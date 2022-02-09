@@ -7,31 +7,34 @@ import { SideBodyItem } from '../../components/SideBodyItem';
 import { SideHeader } from '../../components/SideHeader';
 import { SiderFooter } from '../../components/SiderFooter';
 import { useSoketIO } from '../../hooks/useSocketiIO';
-import { _addFrind } from '../../redux/actions';
+import { _addFrind, _addOneFriend } from '../../redux/actions';
 
 export const CahtSider = () => {
-    const {listenEvent} =  useSoketIO();
+    const { listenEvent } = useSoketIO();
     const dispath = useDispatch();
-    const selector =  useSelector(state=>state.friends);
+    const selector = useSelector(state => state.friends);
 
     useEffect(() => {
-      listenEvent('frineds-connected', (data)=>{
-          console.log(data);
-          dispath(_addFrind(data));
-      })
-      listenEvent('exception', console.log)
+        listenEvent('frineds-connected', (data) => {
+            dispath(_addFrind(data));
+        })
+        listenEvent('frined-connected', (data) => {
+            dispath(_addOneFriend(data));
+        })
+        
+        listenEvent('exception', console.log)
     }, []);
-    
+
     return (
         <Sider>
             <SideHeader />
             <SiderBody>
                 {
-                    !selector.empty && selector?.friends.map(friend=><SideBodyItem {...friend}/>)
+                    !selector.empty && selector?.friends.map(friend => <SideBodyItem key={friend._id} {...friend} />)
                 }
             </SiderBody>
             <SiderFooter />
-            
+
         </Sider>
     )
 }

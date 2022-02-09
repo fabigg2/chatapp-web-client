@@ -8,12 +8,12 @@ export const  useSoketIO = ()=>{
         socketConection.on(event, callback);
     }
 
-    const emintEvent = (event, data)=>{
-        socketConection.on(event, data);
+    const emitEvent = (event, data)=>{
+        socketConection.emit(event, data);
     }
 
 
-    return {listenEvent, emintEvent};
+    return {listenEvent, emitEvent};
 
 }
 

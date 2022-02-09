@@ -1,10 +1,20 @@
-import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useSoketIO } from '../hooks/useSocketiIO';
+import { _addTemp } from '../redux/actions';
 
 
-export const SideBodyItem = ({name, lastname, isConnected}) => {
+export const SideBodyItem = ({_id, name, lastname, isConnected}) => {
+    const dispatch= useDispatch();
+    const {user} = useSelector(state=>state.auth.data);
+    const {emitEvent} = useSoketIO();
+    const setTempUser = (tmpUser)=>{
+        dispatch(_addTemp(tmpUser))
+        emitEvent('find-all-messages', {from: user._id, to: _id});
+    }
+
     return (
-        <Container>
+        <Container onClick={()=>setTempUser({_id, name, lastname, isConnected})}>
             <img src="https://i.pravatar.cc/60" />
             <div className='u-content'>
                 <h4>{name} {lastname}</h4>

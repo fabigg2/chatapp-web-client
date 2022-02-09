@@ -7,6 +7,10 @@ export const types = {
     succesMessage: 'message [success]',
     erroMessage: 'message [error]',
     delteMessage: 'delete [message]',
-    addFirend: 'addFriend'
+    addFirend: '[many] frinds',
+    addOneFirend: '[one] frinds',
+    chatAddMessage: '[one] messae',
+    chatEditeMessage: '[one] messa-edit',
+    chatMessages: '[many] messages'
 
 }
