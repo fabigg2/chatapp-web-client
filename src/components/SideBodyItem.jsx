@@ -18,10 +18,10 @@ export const SideBodyItem = ({_id, name, lastname, isConnected}) => {
             <img src="https://i.pravatar.cc/60" />
             <div className='u-content'>
                 <h4>{name} {lastname}</h4>
-                <p>hello !</p>
+                {/* <p>hello !</p> */}
             </div>
             <div className='opt'>
-                <p>yesterday</p>
+                {/* <p>yesterday</p> */}
                 <span className={isConnected ? 'conneted' : 'disconneted'}></span>
 
             </div>
@@ -46,6 +46,7 @@ const Container = styled.div`
         width: 50px;
         height: 50px;
         border-radius: 50%;
+        border: 1px solid #888888;
     }
     .u-content{
         width: 100%;
@@ -59,7 +60,7 @@ const Container = styled.div`
         h4{
             font-size: 1rem;
             letter-spacing: 1px;
-            font-weight: 300;
+            font-weight: bold;
             font-family: Lato;
             text-transform: capitalize;
 

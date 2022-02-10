@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Message } from './Message';
 import { useSelector } from 'react-redux'
 import { useEffect, useRef } from 'react';
-import { SokectConection, useSoketIO } from '../hooks/useSocketiIO';
+import { useSoketIO } from '../hooks/useSocketiIO';
 import { useDispatch } from 'react-redux';
 import { _chatAddMessage } from '../redux/actions';
 import { _chatEditMessage, _chatMessages } from '../redux/actions/chatAction';
@@ -19,6 +19,9 @@ export const BodyMessage = () => {
       dispatch(_chatAddMessage(data));
       emitEvent('message-receive', data);
     });
+    listenEvent('new-message-me', (data) => {
+      dispatch(_chatAddMessage(data));
+    });
     listenEvent('message-receive', (data) => {
       dispatch(_chatEditMessage(data));
     });
@@ -26,6 +29,8 @@ export const BodyMessage = () => {
       dispatch(_chatMessages(data));
     });
   }, [])
+
+
   useEffect(() => {
     ref.current.scrollTop = ref.current.scrollHeight;
   }, [chat]);
@@ -45,6 +50,9 @@ export const BodyMessage = () => {
   )
 };
 
+const unSightMessage = (messages)=>{
+  return messages.filter(message=>message.state > 2);
+}
 
 
 const BodyMessges = styled.div`
