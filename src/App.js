@@ -10,7 +10,8 @@ function App() {
   const selector = useSelector(state=>state.auth);
   useEffect(() => {
     if(selector.logged){
-      SokectConection.socketIO = io(process.env.REACT_APP_API_HOST,{
+      const host = window.location.href.split('/').includes('localhost') ? process.env.REACT_APP_API_HOST : process.env.REACT_APP_API_HOST_PRO
+      SokectConection.socketIO = io(host,{
         extraHeaders:{
           'x-token': selector.data.token
         }

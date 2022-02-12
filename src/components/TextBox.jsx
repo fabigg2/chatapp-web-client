@@ -3,14 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { SokectConection } from '../hooks/useSocketiIO';
 import { _chatAddMessage } from '../redux/actions';
-import {v4} from 'uuid';
 import { useEffect } from 'react';
+import { useRef } from 'react';
 
 
 export const TextBox = () => {
     const { data } = useSelector(state => state.tmp);
     const { user } = useSelector(state => state.auth.data);
     const { handleSubmit, register, reset } = useForm();
+    const textRef = useRef();
     const dispatch = useDispatch();
     useEffect(()=>{
         reset()
@@ -32,7 +33,7 @@ export const TextBox = () => {
 
     return (
         <BodyTextBox onSubmit={handleSubmit(sendMessage)}>
-            <ChatInput {...register('msg')} />
+            <ChatInput autoComplete='off' {...register('msg', {required: true})}/>
             <SendButton>
                 <i className='fas fa-paper-plane'></i>
             </SendButton>

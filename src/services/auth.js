@@ -5,8 +5,8 @@ export const auth = {
         // console.log(data);
         return await httpClient.post('/auth/sign-in', data);
     },
-    googleSignIn : async(data)=>{
-        return await httpClient.post('/auth/google', data);
+    googleSignIn : async(xgtoken)=>{
+        return await httpClient.post('/auth/google', {}, {headers: {xgtoken}});
     },
     signWithToken : async(data)=>{
         return await httpClient.post('/auth/token', {}, {headers:{'x-token':data}});

@@ -8,24 +8,55 @@ import { ButtonRd, FormItem, FormTitle, Input, Label, ButtonOption, InputError, 
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { saveItemInStorage } from '../../utils';
+import GoogleLogin from 'react-google-login';
+import { AlertDanger } from '../../components/ALert';
+import { useState } from 'react';
 
 export const SignIn = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const { mutate, isLoading, isError, error } = useMutation('sigIn', auth.regularSignIn);
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [err, setErr] = useState(false);
+
+    const onLogin = (data) => {
+        console.log(data)
+        if (data.user.isValidated) {
+            saveItemInStorage('token', data.token);
+            dispatch(_login(data))
+            return navigate('/chat');
+        }
+        setErr(`Tu cuenta no esta validada, revisa tu correo y valida tu cuenta`);
+
+    }
     const logIn = (data) => {
         mutate(data, {
             onSuccess: async ({ data: { data } }) => {
-                saveItemInStorage('token', data.token);
-                dispatch(_login(data))
-                navigate('/chat');
+                onLogin(data);
             }
         })
     }
+
+    const responseGoogle = async (response) => {
+        try {
+            const { data } = await auth.googleSignIn(response.tokenId);
+            // console.log(data.data.user)
+            onLogin(data.data);
+        } catch (error) {
+            if (error.response.status === 400)
+                setErr(`Correo esta registrado intenta ingresar con correo y contraseña`);
+
+        }
+    }
+
     if (isError && !error.response) return <Error danger>network error</Error>
     return (
         <LogInForm onSubmit={handleSubmit(logIn)}>
+            {
+                (err) && <AlertDanger
+                    text={ err}
+                    setErr={setErr} />
+            }
             <FormTitle>
                 Login
             </FormTitle>
@@ -46,6 +77,13 @@ export const SignIn = () => {
             >
                 {isLoading ? 'Loading...' : 'Login'}
             </ButtonRd>
+            <GoogleLogin
+                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                buttonText="Login with Google"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={'single_host_origin'}
+            />
             <ButtonOption
                 onClick={() => navigate('/signup')}
             >

@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import { ChatWindow } from '../pages/Chat';
 import { SignIn } from '../pages/SIgnIn';
 import { SignUp } from '../pages/SignUp';
+import { UserCreatedConfirmation } from '../pages/UserCreated';
 import { _login } from '../redux/actions';
 import { auth } from '../services/auth';
 import { routesPath } from '../settings/routesPath';
@@ -52,6 +53,12 @@ export const Router = () => {
           <PublicRoutes>
             <SignIn />
           </PublicRoutes>}
+      />
+      <Route
+        path={routesPath.userCorimation}
+        element={
+          <UserCreatedConfirmation />
+        }
       />
       <Route
         path={routesPath.signup}
