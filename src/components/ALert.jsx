@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 
-export const AlertDanger = ({ text, setErr }) => (
-    <AlertDange>
+export const AlertDanger = ({ text, setErr, success=false }) => (
+    <AlertDange success={success}>
         <span><i className="fas fa-exclamation-circle"></i></span>
         <p>{text}</p>
         {/* <p>revisa tu correo: {data.user.email[0]}******{data.user.email.split('@')[1]} y valida tu cuenta</p> */}
@@ -18,7 +18,7 @@ const AlertDange = styled.div`
     min-width: 300px;
     max-width: 400px;
     background-color: #00000090;
-    border: 2px solid #ff5f5f;
+    border: 2px solid ${props=>props.success ? '#13a500' :'#ff5f5f'};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,7 +31,7 @@ const AlertDange = styled.div`
     font-weight: bold;
     animation: animate 1s ease-in-out;
     span{
-        color: #ff6262b7;
+        color: ${props=>props.success ? '#13a500' :'#ff5f5f'};
         margin-right: 20px;
     }
     &>i{

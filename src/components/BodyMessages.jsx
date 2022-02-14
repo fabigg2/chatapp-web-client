@@ -28,6 +28,10 @@ export const BodyMessage = () => {
     listenEvent('find-all-messages', (data) => {
       dispatch(_chatMessages(data));
     });
+    listenEvent('deleted-message', (data) => {
+      dispatch(_chatEditMessage(data));
+    });
+    
   }, [])
 
 
@@ -39,7 +43,11 @@ export const BodyMessage = () => {
     <BodyMessges ref={ref}>
       {
         chat.map(message => (
+          !message.deletedTo.includes(user._id) &&
           <Message
+            from={message.from}
+            to={message.to}
+            id={message._id}
             message={message.msg}
             me={message.from === user._id}
             state={message.from === user._id ? message.state : null}
@@ -50,9 +58,6 @@ export const BodyMessage = () => {
   )
 };
 
-const unSightMessage = (messages)=>{
-  return messages.filter(message=>message.state > 2);
-}
 
 
 const BodyMessges = styled.div`

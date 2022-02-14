@@ -10,5 +10,8 @@ export const auth = {
     },
     signWithToken : async(data)=>{
         return await httpClient.post('/auth/token', {}, {headers:{'x-token':data}});
+    },
+    sendLink : async(email)=>{
+        return await httpClient.post('/auth/link', {email});
     }
 }

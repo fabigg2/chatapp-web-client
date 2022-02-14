@@ -1,10 +1,37 @@
+import { useState } from "react";
 import styled from "styled-components";
+import { DeleteMessageModal } from "./DeleteMessageModal";
 
 
-export const Message = ({ message, me, state = 3 }) => {
+export const Message = ({ to, from, id, message, me, state = 3 }) => {
+    const [delte, setDelete] = useState(false);
+    const [modal, setModal] = useState(false);
     return (
-        <Container me={me} state={state}>
-            <div> <p>{message}</p></div>
+        <Container
+            me={me}
+            state={state}
+            onMouseEnter={() => setDelete(true)}
+            onMouseLeave={() => setDelete(false)} >
+
+
+            {
+                modal && <DeleteMessageModal to={to} from={from} id={id} setModal={setModal} />
+            }
+            <div className="msg">
+                <p>{message}
+                {
+                    delte && <DeleteButton
+                        className="fas fa-trash-alt"
+                        onClick={() => setModal(true)}
+                    >
+
+                    </DeleteButton>
+                }
+                </p>
+
+                
+
+            </div>
             {state >= 0 && <div className="check">
                 {
                     (state >= 1) && <i className="fas fa-check"></i>
@@ -24,15 +51,18 @@ export const Message = ({ message, me, state = 3 }) => {
 
 
 const Container = styled.div`
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
-    div{
+    .msg{
+        position: relative;
         display: flex;
         flex-direction: column;
         width: 100%;
         align-items: ${props => props.me ? 'flex-end' : 'flex-start'};
         p{
+            position: relative;
             background-color: ${props => props.me ? '#015999' : '#1BC340'};
             padding: 10px 20px;
             color: #ffffff;
@@ -51,4 +81,12 @@ const Container = styled.div`
         }
     }
 
+`
+const DeleteButton = styled.i`
+    color: #EEEEEE;
+    position: absolute;
+    top: 3px;
+    right: 8px;
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
 `

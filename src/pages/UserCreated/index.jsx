@@ -2,24 +2,36 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { routesPath } from "../../settings/routesPath";
+import {auth} from '../../services/auth'; 
+import { useState } from "react";
+import { AlertDanger } from "../../components/ALert";
 
 export const UserCreatedConfirmation = () => {
     const { data } = useSelector(state => state.tmp);
     const navigate = useNavigate();
+    const [err, setErr] = useState('');
+    const [succ, setSucc] = useState('');
 
     const goLogin = () => {
         navigate(routesPath.login);
     }
-    const resendLink = () => {
-        navigate(routesPath.login);
+    const resendLink = async() => {
+        try {
+            await auth.sendLink(data.data.email);
+            setSucc('We have send the verfification link to'+data.data.email);
+        } catch (error) {
+            setErr('no se envio en link intenta de nuevo')
+        }
     }
     return (
         <>
             {
-                data.data &&
+                (data && data.data) &&
                 <Container>
+                    {err && <AlertDanger text={err} setErr={setErr} /> }
+                    {succ && <AlertDanger text={succ} setErr={setSucc} success={true}/> }
                     <p>Su cuenta se ha creado satisfatoria mente <span>Hemos enviado un un enlase de verificacion al correo: {data.data.email}</span></p>
-                    <Button onClick={() => resendLink()}>Reenviar enlace</Button>
+                    <Button onClick={() => resendLink()} disabled={true} >Reenviar enlace</Button>
                     <Button onClick={() => goLogin()}>Volver a login</Button>
                 </Container>
             }
@@ -56,4 +68,8 @@ const Button = styled.div`
     color: #fff;
     cursor: pointer;
     font-weight: bold;
+    &:disabled{
+        opacity: .5;
+        pointer-events: none;
+    }
 `

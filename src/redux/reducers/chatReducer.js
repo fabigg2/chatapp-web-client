@@ -14,7 +14,7 @@ export const chatReducer = (state = initialState, action) => {
             return [...state];
         case types.chatEditeMessage:
             const index = state.findIndex(msg => msg._id === action.payload._id);
-            state[index].state = action.payload.state;
+            state[index] = action.payload;
             return [...state];
         default:
             return state;

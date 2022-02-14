@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ChatWindow } from '../pages/Chat';
 import { SignIn } from '../pages/SIgnIn';
 import { SignUp } from '../pages/SignUp';
@@ -67,7 +67,7 @@ export const Router = () => {
             <SignUp />
           </PublicRoutes>}
       />
-      <Route path='*' element={<SignIn />} />
+      <Route path='*' element={<Navigate to={routesPath.login}  />} />
     </Routes>
   );
 };
